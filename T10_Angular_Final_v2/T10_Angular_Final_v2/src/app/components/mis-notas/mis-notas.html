@@ -1,0 +1,55 @@
+<div class="management-grid">
+  <div class="card table-card">
+    <h3>Mi Matrícula</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Sección</th>
+          <th>Periodo</th>
+          <th>Fecha de matrícula</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of matriculas">
+          <td>{{ m.seccion?.nombreSeccion }}</td>
+          <td>{{ m.seccion?.periodoAcademico }}</td>
+          <td>{{ m.fechaMatricula }}</td>
+          <td>
+            <span class="badge" [class.badge-active]="m.estado" [class.badge-inactive]="!m.estado">
+              {{ m.estado ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="matriculas.length === 0">
+          <td colspan="4">Aún no tienes una matrícula registrada.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card table-card">
+    <h3>Mis Notas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Curso</th>
+          <th>Evaluación</th>
+          <th>Calificación</th>
+          <th>Ponderación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let n of notas">
+          <td>{{ n.curso?.nombre }}</td>
+          <td>{{ n.nombreEvaluacion }}</td>
+          <td>{{ n.calificacion }}</td>
+          <td>{{ n.ponderacion }}%</td>
+        </tr>
+        <tr *ngIf="notas.length === 0">
+          <td colspan="4">Aún no tienes notas registradas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

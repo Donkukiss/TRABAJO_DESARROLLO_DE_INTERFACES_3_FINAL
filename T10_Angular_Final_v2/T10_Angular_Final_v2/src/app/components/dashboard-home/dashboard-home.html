@@ -1,0 +1,42 @@
+<div class="home-container">
+  <p class="alert-warning" *ngIf="accessDenied">
+    No tienes permisos para acceder a esa sección.
+  </p>
+
+  <h2>Bienvenido{{ currentUser ? ', ' + currentUser.nombres : '' }}</h2>
+  <p class="subtitle" *ngIf="currentUser">
+    Rol actual: <strong>{{ currentUser.rol | rolLabel }}</strong>
+  </p>
+
+  <div class="cards-grid">
+    <div class="info-card" *appHasRole="['ADMIN']">
+      <h3>Gestión de Usuarios</h3>
+      <p>Administra las cuentas del sistema: crea, edita y asigna roles a administradores, profesores y estudiantes.</p>
+      <a routerLink="/dashboard/usuarios" class="card-link">Ir a Usuarios →</a>
+    </div>
+
+    <div class="info-card" *appHasRole="['ADMIN']">
+      <h3>Secciones, Asignaciones y Matrículas</h3>
+      <p>Crea secciones, asigna docentes a cursos y matricula alumnos en cada sección.</p>
+      <a routerLink="/dashboard/secciones" class="card-link">Ir a Secciones →</a>
+    </div>
+
+    <div class="info-card">
+      <h3>Gestión de Cursos</h3>
+      <p>Consulta el catálogo de cursos disponibles.</p>
+      <a routerLink="/dashboard/cursos" class="card-link">Ir a Cursos →</a>
+    </div>
+
+    <div class="info-card" *appHasRole="['ADMIN', 'PROFESOR']">
+      <h3>Panel de Profesor</h3>
+      <p>Registra y actualiza las calificaciones de los alumnos matriculados en tus cursos.</p>
+      <a routerLink="/dashboard/notas" class="card-link">Ir a Notas →</a>
+    </div>
+
+    <div class="info-card" *appHasRole="['ESTUDIANTE']">
+      <h3>Panel de Estudiante</h3>
+      <p>Consulta el catálogo de cursos, tu matrícula y tus calificaciones.</p>
+      <a routerLink="/dashboard/mis-notas" class="card-link">Ir a Mis Notas →</a>
+    </div>
+  </div>
+</div>

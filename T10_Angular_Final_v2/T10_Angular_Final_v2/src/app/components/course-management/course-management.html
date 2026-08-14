@@ -1,0 +1,73 @@
+<div class="management-grid">
+  <div class="card form-card" *appHasRole="['ADMIN']">
+    <h3>{{ editingCourseId ? 'Editar Curso' : 'Registro de Curso' }}</h3>
+    <p class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Nombre del curso</label>
+        <input type="text" formControlName="nombre" />
+        <span class="error-text" *ngIf="courseForm.get('nombre')?.touched && courseForm.get('nombre')?.hasError('required')">Requerido.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea formControlName="descripcion" rows="3"></textarea>
+        <span class="error-text" *ngIf="courseForm.get('descripcion')?.touched && courseForm.get('descripcion')?.hasError('required')">Requerido.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Sección</label>
+        <select formControlName="idSeccion">
+          <option [ngValue]="null" disabled>Seleccione una sección</option>
+          <option *ngFor="let s of secciones" [ngValue]="s.idSeccion">{{ s.nombreSeccion }} ({{ s.periodoAcademico }})</option>
+        </select>
+        <span class="error-text" *ngIf="courseForm.get('idSeccion')?.touched && courseForm.get('idSeccion')?.hasError('required')">Requerido.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select formControlName="estado">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="courseForm.invalid" class="btn-primary">
+          {{ editingCourseId ? 'Actualizar' : 'Guardar' }}
+        </button>
+        <button type="button" class="btn-cancel" (click)="resetForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card table-card">
+    <h3>Lista de Cursos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Sección</th>
+          <th>Estado</th>
+          <th *appHasRole="['ADMIN']">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of courses">
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.seccion?.nombreSeccion }}</td>
+          <td>
+            <span class="badge" [class.badge-active]="c.estado" [class.badge-inactive]="!c.estado">
+              {{ c.estado ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+          </td>
+          <td *appHasRole="['ADMIN']">
+            <button class="btn-edit" (click)="onEdit(c)">Editar</button>
+            <button class="btn-delete" (click)="onDelete(c.idCurso!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

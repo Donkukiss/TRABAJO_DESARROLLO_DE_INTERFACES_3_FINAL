@@ -1,0 +1,78 @@
+<div class="management-grid">
+  <div class="card form-card">
+    <h3>{{ editingNotaId ? 'Editar Nota' : 'Registrar Nota' }}</h3>
+    <p class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <form [formGroup]="notaForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Curso</label>
+        <select formControlName="idCurso">
+          <option [ngValue]="null" disabled>Seleccione un curso</option>
+          <option *ngFor="let c of cursos" [ngValue]="c.idCurso">{{ c.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Alumno</label>
+        <select formControlName="idAlumno">
+          <option [ngValue]="null" disabled>Seleccione un alumno</option>
+          <option *ngFor="let a of alumnos" [ngValue]="a.idAlumno">{{ a.usuario.nombre }} {{ a.usuario.apellido }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre de la evaluación</label>
+        <input type="text" formControlName="nombreEvaluacion" placeholder="Ej: Práctica Calificada 2" />
+        <span class="error-text" *ngIf="notaForm.get('nombreEvaluacion')?.touched && notaForm.get('nombreEvaluacion')?.hasError('required')">Requerido.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Calificación (0 - 20)</label>
+        <input type="number" formControlName="calificacion" min="0" max="20" step="0.5" />
+        <span class="error-text" *ngIf="notaForm.get('calificacion')?.touched && notaForm.get('calificacion')?.invalid">Debe estar entre 0 y 20.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Ponderación (%)</label>
+        <input type="number" formControlName="ponderacion" min="0" max="100" step="1" />
+        <span class="error-text" *ngIf="notaForm.get('ponderacion')?.touched && notaForm.get('ponderacion')?.invalid">Debe estar entre 0 y 100.</span>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="notaForm.invalid" class="btn-primary">
+          {{ editingNotaId ? 'Actualizar' : 'Registrar' }}
+        </button>
+        <button type="button" class="btn-cancel" (click)="resetForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card table-card">
+    <h3>Notas Registradas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Curso</th>
+          <th>Evaluación</th>
+          <th>Calificación</th>
+          <th>Ponderación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let n of notas">
+          <td>{{ n.alumno?.usuario?.nombre }} {{ n.alumno?.usuario?.apellido }}</td>
+          <td>{{ n.curso?.nombre }}</td>
+          <td>{{ n.nombreEvaluacion }}</td>
+          <td>{{ n.calificacion }}</td>
+          <td>{{ n.ponderacion }}%</td>
+          <td>
+            <button class="btn-edit" (click)="onEdit(n)">Editar</button>
+            <button class="btn-delete" (click)="onDelete(n.idNota!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

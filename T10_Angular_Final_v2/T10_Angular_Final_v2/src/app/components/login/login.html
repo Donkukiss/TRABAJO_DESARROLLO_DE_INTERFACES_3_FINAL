@@ -1,0 +1,37 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-card">
+    <h2>Iniciar Sesión</h2>
+    
+    <div *ngIf="errorMessage" class="alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div class="form-group">
+      <label for="dni">DNI (Usuario)</label>
+      <input id="dni" type="text" formControlName="dni" placeholder="Ingrese DNI (8 dígitos)" />
+      <span class="error-text" *ngIf="loginForm.get('dni')?.touched && loginForm.get('dni')?.hasError('required')">
+        El DNI es obligatorio.
+      </span>
+      <span class="error-text" *ngIf="loginForm.get('dni')?.touched && loginForm.get('dni')?.hasError('pattern')">
+        Debe contener exactamente 8 números.
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" type="password" formControlName="contrasena" placeholder="******" />
+      <span class="error-text" *ngIf="loginForm.get('contrasena')?.touched && loginForm.get('contrasena')?.hasError('required')">
+        La contraseña es obligatoria.
+      </span>
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid" class="btn-primary">Ingresar</button>
+
+    <div class="demo-credentials">
+      <p><strong>Credenciales de prueba:</strong></p>
+      <p>Admin: 00000000 / admin123</p>
+      <p>Profesor: 11111111 / profesor123</p>
+      <p>Estudiante: 22222222 / estudiante123</p>
+    </div>
+  </form>
+</div>

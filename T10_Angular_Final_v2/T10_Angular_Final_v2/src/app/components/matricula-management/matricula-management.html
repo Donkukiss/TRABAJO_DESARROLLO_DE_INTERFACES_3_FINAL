@@ -1,0 +1,67 @@
+<div class="management-grid">
+  <div class="card form-card">
+    <h3>Matricular Alumno</h3>
+    <p class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <form [formGroup]="matriculaForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Alumno</label>
+        <select formControlName="idAlumno">
+          <option [ngValue]="null" disabled>Seleccione un alumno</option>
+          <option *ngFor="let a of alumnos" [ngValue]="a.idAlumno">{{ a.usuario.nombre }} {{ a.usuario.apellido }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Sección</label>
+        <select formControlName="idSeccion">
+          <option [ngValue]="null" disabled>Seleccione una sección</option>
+          <option *ngFor="let s of secciones" [ngValue]="s.idSeccion">{{ s.nombreSeccion }} ({{ s.periodoAcademico }})</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select formControlName="estado">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="matriculaForm.invalid" class="btn-primary">Matricular</button>
+        <button type="button" class="btn-cancel" (click)="resetForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card table-card">
+    <h3>Matrículas Registradas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Sección</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of matriculas">
+          <td>{{ m.alumno?.usuario?.nombre }} {{ m.alumno?.usuario?.apellido }}</td>
+          <td>{{ m.seccion?.nombreSeccion }}</td>
+          <td>{{ m.fechaMatricula }}</td>
+          <td>
+            <span class="badge" [class.badge-active]="m.estado" [class.badge-inactive]="!m.estado">
+              {{ m.estado ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-delete" (click)="onDelete(m.idMatricula!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

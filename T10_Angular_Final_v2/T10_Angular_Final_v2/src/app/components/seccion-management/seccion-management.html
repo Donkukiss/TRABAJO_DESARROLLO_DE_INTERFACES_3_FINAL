@@ -1,0 +1,71 @@
+<div class="management-grid">
+  <div class="card form-card">
+    <h3>{{ editingSeccionId ? 'Editar Sección' : 'Registro de Sección' }}</h3>
+    <p class="alert-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <form [formGroup]="seccionForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Nombre de la sección</label>
+        <input type="text" formControlName="nombreSeccion" placeholder="Ej: Sección C" />
+        <span class="error-text" *ngIf="seccionForm.get('nombreSeccion')?.touched && seccionForm.get('nombreSeccion')?.hasError('required')">Requerido.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Periodo académico</label>
+        <input type="text" formControlName="periodoAcademico" placeholder="Ej: 2026-II" />
+        <span class="error-text" *ngIf="seccionForm.get('periodoAcademico')?.touched && seccionForm.get('periodoAcademico')?.hasError('required')">Requerido.</span>
+      </div>
+
+      <div class="form-group">
+        <label>Capacidad máxima</label>
+        <input type="number" formControlName="capacidadMaxima" min="1" />
+      </div>
+
+      <div class="form-group">
+        <label>Estado</label>
+        <select formControlName="estado">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="seccionForm.invalid" class="btn-primary">
+          {{ editingSeccionId ? 'Actualizar' : 'Guardar' }}
+        </button>
+        <button type="button" class="btn-cancel" (click)="resetForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card table-card">
+    <h3>Lista de Secciones</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Periodo</th>
+          <th>Capacidad</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of secciones">
+          <td>{{ s.nombreSeccion }}</td>
+          <td>{{ s.periodoAcademico }}</td>
+          <td>{{ s.capacidadMaxima }}</td>
+          <td>
+            <span class="badge" [class.badge-active]="s.estado" [class.badge-inactive]="!s.estado">
+              {{ s.estado ? 'ACTIVO' : 'INACTIVO' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-edit" (click)="onEdit(s)">Editar</button>
+            <button class="btn-delete" (click)="onDelete(s.idSeccion!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
